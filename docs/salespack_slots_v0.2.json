@@ -1,0 +1,112 @@
+{
+  "_meta": {
+    "version": "0.2",
+    "date": "2026-10-30",
+    "theme": { "default": "light-blue", "alt": "dark-purple", "note": "CSS 변수로 전환" },
+    "page_layout": ["label", "title", "subtitle", "body", "conclusion"],
+    "body_variants": ["cards3", "vs2", "table"],
+    "limits": { "title": 18, "subtitle": 45, "card.title": 14, "card.body": 60, "vs.item": 25, "table.cell": 12, "conclusion": 40 },
+    "rule": "모든 card.body / vs.item 에는 evidence ref [n] 최소 1개. 근거 없는 문장 금지 → 검증관이 '없음' 처리",
+    "llm_calls": "페이지 2,3,5,6,7 = 각 1회 (총 5회) + 표지 1회 = 6회. 4장 표·8장 부록은 코드로 채움"
+  },
+  "pages": [
+    {
+      "no": 1, "label": "COVER", "filled_by": "llm",
+      "slots": {
+        "title": { "max": 18, "example": "하나은행을 위한 AI/AX 제안", "source": "request.customer" },
+        "subtitle": { "max": 45, "example": "경쟁 은행이 앞서가는 지금, 한 발 앞선 고객 경험으로", "source": "llm" },
+        "tags": { "count": 3, "max_each": 20, "example": ["Agent Service", "Data/Knowledge", "Platform/Orchestration"], "source": "matched_tech.layers" },
+        "meta": { "date": "auto", "author": "request.user" }
+      }
+    },
+    {
+      "no": 2, "label": "WHY NOW", "filled_by": "llm", "body": "cards3",
+      "slots": {
+        "title": { "max": 18, "example": "하나은행의 현재" },
+        "subtitle": { "max": 45, "example": "지금 가장 아쉬운 세 가지" },
+        "cards": [
+          { "title": { "max": 14 }, "body": { "max": 60 }, "ref": "required", "source": "customer_profile.painpoints[0]" },
+          { "title": { "max": 14 }, "body": { "max": 60 }, "ref": "required", "source": "customer_profile.painpoints[1]" },
+          { "title": { "max": 14 }, "body": { "max": 60 }, "ref": "required", "source": "customer_profile.painpoints[2]" }
+        ],
+        "conclusion": { "max": 40, "example": "지금 필요한 건 고객 접점의 AI 자동화입니다" }
+      }
+    },
+    {
+      "no": 3, "label": "MARKET", "filled_by": "llm", "body": "cards3",
+      "slots": {
+        "title": { "max": 18, "example": "경쟁사는 지금" },
+        "subtitle": { "max": 45, "example": "최근 6개월 국민·신한·우리의 AI/AX 도입" },
+        "cards": [
+          { "title": { "max": 14, "source": "competitor[0].name" }, "body": { "max": 60 }, "status": "🟢|🟡|🔵|⚪", "date": "announced_at", "ref": "required" },
+          { "title": { "max": 14, "source": "competitor[1].name" }, "body": { "max": 60 }, "status": "", "date": "", "ref": "required" },
+          { "title": { "max": 14, "source": "competitor[2].name" }, "body": { "max": 60 }, "status": "", "date": "", "ref": "required" }
+        ],
+        "conclusion": { "max": 40, "example": "경쟁사 3곳 중 2곳이 이미 Agent 서비스 운영 중" }
+      }
+    },
+    {
+      "no": 4, "label": "COMPARISON", "filled_by": "code", "body": "table",
+      "slots": {
+        "title": { "fixed": "한눈에 보는 비교" },
+        "subtitle": { "max": 45, "fixed": "표준 기능 6계층 × 경쟁사 (담당자 확인 완료)" },
+        "table": {
+          "rows": ["Infra", "Data/Knowledge", "LLM", "Agent Ops", "Platform/Orchestration", "Agent Service"],
+          "cols": "competitors[0..2] + 고객사",
+          "cell": { "max": 12, "format": "상태이모지 + 기능명 요약", "upcoming_mark": "🔜" },
+          "source": "comparison_table (confirm1=true)"
+        },
+        "conclusion": { "none": true }
+      }
+    },
+    {
+      "no": 5, "label": "PROPOSAL", "filled_by": "llm", "body": "vs2",
+      "slots": {
+        "title": { "max": 18, "example": "SK AX의 제안" },
+        "subtitle": { "max": 45 },
+        "vs": {
+          "left": { "heading": { "fixed": "지금 방식" }, "items": [ { "max": 25 }, { "max": 25 }, { "max": 25 } ], "source": "customer_profile.current" },
+          "right": { "heading": { "fixed": "SK AX 제안" }, "items": [ { "max": 25, "ref": "required" }, { "max": 25, "ref": "required" }, { "max": 25, "ref": "required" } ], "source": "matched_tech[0..2] × own_service.strengths" }
+        },
+        "conclusion": { "max": 40, "example": "실행 가능하고 즉시 적용되는 제안" }
+      }
+    },
+    {
+      "no": 6, "label": "VALUE", "filled_by": "llm", "body": "cards3",
+      "slots": {
+        "title": { "max": 18, "example": "경쟁사 대비 차별화" },
+        "subtitle": { "max": 45 },
+        "cards": [
+          { "title": { "max": 14 }, "body": { "max": 60 }, "ref": "required", "source": "differentiation[0]" },
+          { "title": { "max": 14 }, "body": { "max": 60 }, "ref": "required", "source": "differentiation[1]" },
+          { "title": { "max": 14 }, "body": { "max": 60 }, "ref": "required", "source": "differentiation[2]" }
+        ],
+        "conclusion": { "max": 40, "example": "경쟁사가 못 하는 것을 먼저 합니다" }
+      }
+    },
+    {
+      "no": 7, "label": "NEXT STEP", "filled_by": "llm+fixed", "body": "cards3", "scope": "🔜 선택",
+      "slots": {
+        "title": { "fixed": "함께 시작하기" },
+        "subtitle": { "max": 45 },
+        "cards": [
+          { "title": { "fixed": "Foundation" }, "body": { "max": 60 } },
+          { "title": { "fixed": "Expansion" }, "body": { "max": 60 } },
+          { "title": { "fixed": "Optimization" }, "body": { "max": 60 } }
+        ],
+        "conclusion": { "max": 40, "example": "다음 미팅에서 1단계 범위를 함께 정하겠습니다" }
+      }
+    },
+    {
+      "no": 8, "label": "APPENDIX", "filled_by": "code", "body": "table",
+      "slots": {
+        "title": { "fixed": "근거 출처" },
+        "table": {
+          "cols": ["[n]", "매체", "제목", "발표일", "출시상태", "신뢰등급(T1~T5)", "URL"],
+          "source": "evidence where ref in salespack.refs",
+          "order": "ref asc"
+        }
+      }
+    }
+  ]
+}

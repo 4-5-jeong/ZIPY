@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Sales Pack — 템플릿 예시</title>
+<style>
+  /* ── 테마: CSS 변수만 바꾸면 흰+파랑 ↔ 다크 보라 ── */
+  :root{
+    --bg:#ffffff; --fg:#111827; --muted:#6b7280;
+    --accent:#1d4ed8; --accent-soft:#dbeafe; --card:#f8fafc; --line:#e5e7eb;
+    --font:"Pretendard","Noto Sans KR",system-ui,sans-serif;
+  }
+  [data-theme="dark"]{
+    --bg:#160d3a; --fg:#ffffff; --muted:#c4b5fd;
+    --accent:#a78bfa; --accent-soft:#2e1a6b; --card:#1f1350; --line:#3b2a7a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:#999;color:var(--fg)}
+
+  /* ── 페이지 1장 = 5칸 (라벨 / 제목 / 부제 / 본문 / 결론 바) ── A4 가로 */
+  .page{width:297mm;height:210mm;background:var(--bg);padding:16mm 18mm;margin:8mm auto;
+        display:grid;grid-template-rows:auto auto auto 1fr auto;gap:6mm;page-break-after:always;position:relative}
+  .label{font-size:11px;letter-spacing:.25em;color:var(--accent);font-weight:600;text-transform:uppercase}
+  .chapter{position:absolute;top:16mm;right:18mm;font-size:11px;color:var(--muted)}
+  .title{font-size:30px;font-weight:800;line-height:1.2}
+  .subtitle{font-size:14px;color:var(--muted)}
+  .conclusion{background:var(--accent);color:#fff;font-size:15px;font-weight:700;padding:5mm 7mm;border-radius:6px}
+  .conclusion:empty{display:none}
+  .ref{font-size:10px;color:var(--accent);vertical-align:super;margin-left:2px}
+  .pageno{position:absolute;bottom:8mm;right:18mm;font-size:10px;color:var(--muted)}
+
+  /* ── 본문 변형 ① cards3 ── */
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:6mm}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:7mm;display:flex;flex-direction:column;gap:3mm}
+  .card .no{font-size:12px;color:var(--accent);font-weight:700}
+  .card h3{font-size:17px;font-weight:700}
+  .card p{font-size:13px;line-height:1.55;color:var(--fg)}
+  .card .meta{font-size:11px;color:var(--muted);margin-top:auto}
+
+  /* ── 본문 변형 ② vs2 ── */
+  .vs2{display:grid;grid-template-columns:1fr 24px 1fr;gap:6mm;align-items:stretch}
+  .vs2 .side{border-radius:10px;padding:7mm;border:1px solid var(--line);background:var(--card)}
+  .vs2 .side.right{background:var(--accent-soft);border-color:var(--accent)}
+  .vs2 h3{font-size:15px;color:var(--muted);margin-bottom:4mm}
+  .vs2 .side.right h3{color:var(--accent)}
+  .vs2 li{font-size:14px;line-height:1.6;list-style:none;padding-left:14px;position:relative}
+  .vs2 li::before{content:"•";position:absolute;left:0;color:var(--accent)}
+  .vs2 .mid{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--muted)}
+
+  /* ── 본문 변형 ③ table ── */
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{border:1px solid var(--line);padding:3mm 3.5mm;text-align:left;vertical-align:top}
+  th{background:var(--card);font-weight:700}
+  td.soon{color:var(--muted)}
+
+  @media print{ body{background:none} .page{margin:0} }
+</style>
+</head>
+<body data-theme="light">
+
+<!-- ════════ 페이지 2 · WHY NOW · cards3 ════════ -->
+<section class="page">
+  <div class="label">WHY NOW</div>
+  <div class="chapter">하나은행 제안 · 2026.11</div>
+  <h1 class="title">하나은행의 현재</h1>
+  <p class="subtitle">지금 가장 아쉬운 세 가지</p>
+  <div class="cards3">
+    <div class="card"><div class="no">01</div><h3>상담 대기 시간</h3><p>앱 내 상담 평균 대기 4분, 경쟁사 대비 2배<span class="ref">[1]</span></p><div class="meta">근거 1 · 2026.09 보도</div></div>
+    <div class="card"><div class="no">02</div><h3>반복 문의 처리</h3><p>단순 조회성 문의가 전체 콜의 62%, 상담사 피로 누적<span class="ref">[2]</span></p><div class="meta">근거 2 · 공시</div></div>
+    <div class="card"><div class="no">03</div><h3>사내 지식 분산</h3><p>상품·규정 문서가 부서별 폴더에 흩어져 신입 온보딩 지연<span class="ref">[3]</span></p><div class="meta">근거 3 · 입력</div></div>
+  </div>
+  <div class="conclusion">지금 필요한 건 고객 접점의 AI 자동화입니다</div>
+  <div class="pageno">2 / 8</div>
+</section>
+
+<!-- ════════ 페이지 4 · COMPARISON · table ════════ -->
+<section class="page">
+  <div class="label">COMPARISON</div>
+  <div class="chapter">하나은행 제안 · 2026.11</div>
+  <h1 class="title">한눈에 보는 비교</h1>
+  <p class="subtitle">표준 기능 6계층 × 경쟁사 (담당자 확인 완료)</p>
+  <table>
+    <thead><tr><th>표준 기능</th><th>국민은행</th><th>신한은행</th><th>우리은행</th><th>하나은행</th></tr></thead>
+    <tbody>
+      <tr><td>Agent Service</td><td>🟢 AI 상담 비서<span class="ref">[4]</span></td><td>🟡 베타 챗봇<span class="ref">[5]</span></td><td class="soon">🔵 🔜 예고<span class="ref">[6]</span></td><td>⚪ 미확인</td></tr>
+      <tr><td>Data/Knowledge</td><td>🟢 사내 문서 RAG<span class="ref">[7]</span></td><td>⚪ 미확인</td><td>🟢 지식 검색<span class="ref">[8]</span></td><td>⚪ 미확인</td></tr>
+      <tr><td>LLM</td><td>🟢 자체 sLLM<span class="ref">[4]</span></td><td>🟢 외부 API</td><td>🟢 외부 API</td><td>⚪ 미확인</td></tr>
+      <tr><td>Agent Ops</td><td>⚪ 미확인</td><td>⚪ 미확인</td><td>⚪ 미확인</td><td>⚪ 미확인</td></tr>
+      <tr><td>Platform/Orchestration</td><td>🟡 베타<span class="ref">[9]</span></td><td>⚪ 미확인</td><td>⚪ 미확인</td><td>⚪ 미확인</td></tr>
+      <tr><td>Infra</td><td>🟢 프라이빗 클라우드</td><td>🟢 프라이빗 클라우드</td><td>⚪ 미확인</td><td>⚪ 미확인</td></tr>
+    </tbody>
+  </table>
+  <div class="conclusion"></div>
+  <div class="pageno">4 / 8</div>
+</section>
+
+<!-- ════════ 페이지 5 · PROPOSAL · vs2 ════════ -->
+<section class="page">
+  <div class="label">PROPOSAL</div>
+  <div class="chapter">하나은행 제안 · 2026.11</div>
+  <h1 class="title">SK AX의 제안</h1>
+  <p class="subtitle">지금 방식에서 한 단계, 경쟁사보다 한 발</p>
+  <div class="vs2">
+    <div class="side"><h3>지금 방식</h3><ul>
+      <li>상담사가 FAQ를 직접 검색해 응대</li>
+      <li>부서별 문서 폴더, 검색 불가</li>
+      <li>챗봇은 시나리오형, 질문 바뀌면 실패</li></ul></div>
+    <div class="mid">VS</div>
+    <div class="side right"><h3>SK AX 제안</h3><ul>
+      <li>Agent Service: 상담 비서가 1차 응대<span class="ref">[10]</span></li>
+      <li>Data/Knowledge: 사내 문서 RAG 통합 검색<span class="ref">[11]</span></li>
+      <li>Platform: 질문 유형별 자동 라우팅<span class="ref">[12]</span></li></ul></div>
+  </div>
+  <div class="conclusion">실행 가능하고 즉시 적용되는 제안</div>
+  <div class="pageno">5 / 8</div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+# 로컬 개발용. RDS 승인 전까지 Postgres+pgvector를 여기서 띄움.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: zipy
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+volumes:
+  pgdata:
